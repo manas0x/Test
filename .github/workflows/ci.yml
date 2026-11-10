@@ -1,4 +1,4 @@
-name: README check
+name: Project CI
 
 on:
   push:
@@ -16,3 +16,14 @@ jobs:
       - uses: actions/checkout@v4
       - name: Confirm README exists
         run: test -s README.md
+
+  deployment-page-smoke-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check the deployment page and monitoring links
+        run: |
+          test -s site/index.html
+          grep -Fq '<title>GitFlow Analyzer Deployment Test</title>' site/index.html
+          grep -Fq 'href="https://github.com/manas0x/Test/actions"' site/index.html
+          grep -Fq 'href="https://gitflow-analyzer.onrender.com/"' site/index.html
